@@ -148,19 +148,31 @@ void AdaptiveIntArray::print(size_t startIndex,
 }
 
 
-int main()
+void test(int8_t maxPowerOf2, int maxNumElements)
 {
-  const int numInts = 10000;
-  AdaptiveIntArray* testArr = new AdaptiveIntArray(31,numInts);
-  for (int8_t testValue=0;testValue<=31;testValue++)
+  int curPowerOf2 = 2;
+  int curNumElements = 2;
+  for (;curPowerOf2 <= maxPowerOf2;curPowerOf2++)
   {
-    for (int i=0;i<numInts;i++)
+    for (curNumElements=2;curNumElements<=maxNumElements;curNumElements++)
     {
-      testArr->insert(i,testValue);
-      cout << (int) testArr->get(i) << endl;
-      assert(testArr->get(i) == testValue);
+      int rangeMax = (1<< curPowerOf2) - 1;
+      int testValue = rand() % (1<<curPowerOf2);
+      cout << "Testing: Range: " << rangeMax << " numElements: " << curNumElements << endl; 
+      AdaptiveIntArray* testArr = new AdaptiveIntArray(rangeMax,curNumElements);
+      for (int ctr=0;ctr<curNumElements;ctr++)
+      {
+        testArr->insert(ctr,testValue);
+        assert(testArr->get(ctr) == testValue);
+      }
     }
   }
+
+}
+
+int main()
+{
+  test(10,10000);
   return 0;
 }
 

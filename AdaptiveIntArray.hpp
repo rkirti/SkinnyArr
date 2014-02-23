@@ -50,10 +50,9 @@ public:
   // returns -1 for not found
   size_t find(int value) const;     
 
-  // for debugging
+  // Misc - for debug,test..
   void print(size_t startIndex, size_t endIndex);  
 
-  // 
   int32_t getStorageSizeInInts()
   {
     return m_storageSize;
