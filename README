@@ -11,11 +11,8 @@ for the integer range and packs the array into
 an int32_t array. 
 * main() right now has toy test cases with 
 insert and get. 
-* The boundary-crossing case is not handled
-i.e. when the AdaptiveInt spans 2 int32_t's
-but should not be more than one hour of work
-to write/test.
-
-
+* Only single boundary crossing handled -
+assuming integers are not large enough
+to cross 2 int32_t boundaries for now
 
 
