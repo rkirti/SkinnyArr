@@ -150,12 +150,11 @@ void AdaptiveIntArray::print(size_t startIndex,
 
 int main()
 {
-  // Toy test case: 5 bits *  16 elements = ceil(80/32)
-  // =  3 ints needed!
-  AdaptiveIntArray* testArr = new AdaptiveIntArray(31,16);
+  const int numInts = 10000;
+  AdaptiveIntArray* testArr = new AdaptiveIntArray(31,numInts);
   for (int8_t testValue=0;testValue<=31;testValue++)
   {
-    for (int i=0;i<16;i++)
+    for (int i=0;i<numInts;i++)
     {
       testArr->insert(i,testValue);
       cout << (int) testArr->get(i) << endl;
