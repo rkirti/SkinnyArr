@@ -86,6 +86,7 @@ void printBitWise(int32_t num, int numBitsPerElement)
 // Bits 31....0 => Left..... Right (Big Endian Assumption)
 int32_t getBits(int32_t num, int8_t leftIdx, int8_t rightIdx)
 {
+  // cout << (int)leftIdx << "-" << (int)rightIdx << endl;
   // Prepare a mask to get only required bits
   int32_t allOnes = ~0;
   int32_t left;
@@ -93,7 +94,7 @@ int32_t getBits(int32_t num, int8_t leftIdx, int8_t rightIdx)
     left  = 0;
   else
     left  = allOnes << (leftIdx+1);
-  int32_t right ((1<<rightIdx) -1);
+  int32_t right = ((1<<rightIdx) -1);
   int32_t mask = ~(left | right);
   return (num & mask);
 }
