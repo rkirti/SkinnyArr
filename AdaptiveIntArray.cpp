@@ -22,8 +22,6 @@ void AdaptiveIntArray::insert(size_t index, int value)
   if (doesCross)
   {
     int8_t numBitsLeft, numBitsRight;
-    int32_t res1, res2;
-    int32_t mask;
     int8_t leftBitIdx, rightBitIdx;
     int value_actual,value_left, value_right;
     
@@ -121,9 +119,11 @@ int AdaptiveIntArray::get(size_t index) const
   else 
   {
     // Single element to be picked up
-    int8_t  leftBitIdx = (NUM_BITS_PER_STORAGE_ELEMENT - 1) 
-                    - (startBitIdx % NUM_BITS_PER_STORAGE_ELEMENT);
-    int8_t  rightBitIdx = leftBitIdx - (m_numBitsPerInt -1);
+    int8_t leftBitIdx,rightBitIdx;
+    leftBitIdx = startBitIdx - (startElemIdx << POWER_OF_2_USED_IN_STORAGE_ELEMENT);
+    leftBitIdx = (NUM_BITS_PER_STORAGE_ELEMENT -1) - leftBitIdx;
+    rightBitIdx = leftBitIdx - (m_numBitsPerInt -1);
+    
     int32_t res = getBits(m_storage[startElemIdx],leftBitIdx, rightBitIdx);
     res = res >> rightBitIdx;
     // FIXME: Right-shifting messes things up when the MSB is 1
