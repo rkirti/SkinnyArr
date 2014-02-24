@@ -1,5 +1,5 @@
 #include "AdaptiveIntArray.hpp"
-
+#include "TestAIA.hpp"
 
 void AdaptiveIntArray::insert(size_t index, int value)
 {
@@ -136,7 +136,7 @@ int AdaptiveIntArray::get(size_t index) const
 
 size_t AdaptiveIntArray::find(int value) const
 {
-
+  // FIXME: TBD
 }
 
 
@@ -147,32 +147,10 @@ void AdaptiveIntArray::print(size_t startIndex,
     printBitWise(m_storage[ctr]);
 }
 
-
-void test(int8_t maxPowerOf2, int maxNumElements)
-{
-  int curPowerOf2 = 2;
-  int curNumElements = 2;
-  for (;curPowerOf2 <= maxPowerOf2;curPowerOf2++)
-  {
-    for (curNumElements=2;curNumElements<=maxNumElements;curNumElements++)
-    {
-      int rangeMax = (1<< curPowerOf2) - 1;
-      int testValue = rand() % (1<<curPowerOf2);
-      cout << "Testing: Range: " << rangeMax << " numElements: " << curNumElements << endl; 
-      AdaptiveIntArray* testArr = new AdaptiveIntArray(rangeMax,curNumElements);
-      for (int ctr=0;ctr<curNumElements;ctr++)
-      {
-        testArr->insert(ctr,testValue);
-        assert(testArr->get(ctr) == testValue);
-      }
-    }
-  }
-
-}
-
 int main()
 {
-  test(10,10000);
+  testAIA(10,100000);
+  testRegularIntArray(10,100000);
   return 0;
 }
 

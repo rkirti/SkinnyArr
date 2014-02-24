@@ -1,3 +1,4 @@
+#pragma once
 #include "BitHelper.hpp"
 #include <iostream>
 #include <cstdlib>

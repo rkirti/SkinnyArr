@@ -1,0 +1,22 @@
+Pending tasks 
+============
+1. bools / 1-digit entries won't be handled by the current class.
+   Plan is to have a separate class for bools and switch based on
+   input. But will the overhead of checking 'bool or not' be too
+   high? 
+2. Signed integers not handled for now - most likely
+   due to the fact that right-shifting fills the integer with MSB
+   which is 1 for negative integers, screwing up some of my 
+   calculations. Should be easy to fix this by using a mask
+   immediately after the right shift operations? 
+3. Opportunities for prefetching - 
+   (a) the get() functions should prefetch the required
+   ints from the array while we compute which bits are relevant.. 
+   (b) 
+4. Optimizations in BitHelper functions -
+   (a) Would it help to have a look-up table for all kinds of 
+   masks? (i.e get the mask given leftIdx and rightIdx?)
+   Seems unlikely but do check.
+5. Fix the modulus calculation using the trick here -
+   graphics.stanford.edu/~seander/bithacks.html#ModulusDivisionEasy
+6. Precompute (m_numBitsPerInt -1) and (NUM_BITS_PER_STORAGE_ELEMENT-1)
