@@ -21,13 +21,15 @@ class AdaptiveIntArray
 public:
   // Configured for int32_t storage
   enum {POWER_OF_2_USED_IN_STORAGE_ELEMENT = 5,
-        NUM_BITS_PER_STORAGE_ELEMENT =32};
+        NUM_BITS_PER_STORAGE_ELEMENT =32,
+        NUM_BITS_PER_STORAGE_ELEMENT_MINUS_ONE =31};
   // Takes two parameters - max 
   // int to store, and number of elements
   // in the array
   AdaptiveIntArray(int rangeMax, int numElements)
   {
     m_numBitsPerInt = getNumBitsNeeded(rangeMax);
+    m_numBitsPerIntMinusOne = m_numBitsPerInt-1;
     int64_t totalBits = m_numBitsPerInt*numElements;   
     if (totalBits % 32 == 0)
       m_storageSize = totalBits >> 5;
@@ -67,4 +69,5 @@ private:
   int8_t  m_numBitsPerInt; 
   int32_t m_storageSize;
   int32_t* m_storage;
+  int8_t m_numBitsPerIntMinusOne;
 };

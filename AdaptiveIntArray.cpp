@@ -9,7 +9,7 @@ void AdaptiveIntArray::insert(size_t index, int value)
 
   // Determine where this integer starts and ends
   startBitIdx = index*m_numBitsPerInt;
-  endBitIdx = startBitIdx + m_numBitsPerInt -1;
+  endBitIdx = startBitIdx + m_numBitsPerIntMinusOne;
   
   // Determine its position in the underlying int
   // storage array and if it crosses an int 
@@ -27,7 +27,7 @@ void AdaptiveIntArray::insert(size_t index, int value)
     
 
     leftBitIdx = startBitIdx - (startElemIdx << POWER_OF_2_USED_IN_STORAGE_ELEMENT);
-    leftBitIdx = (NUM_BITS_PER_STORAGE_ELEMENT -1) - leftBitIdx;
+    leftBitIdx = (NUM_BITS_PER_STORAGE_ELEMENT_MINUS_ONE) - leftBitIdx;
 
     // Since we know this int crosses a boundary,
     // number of bits in the left element == leftBitIdx+1
@@ -39,22 +39,16 @@ void AdaptiveIntArray::insert(size_t index, int value)
 
     value_right = getBits(value,numBitsRight-1,0);
     value_left = 
-      getBits(value,m_numBitsPerInt-1, m_numBitsPerInt -numBitsLeft); 
+      getBits(value,m_numBitsPerIntMinusOne, m_numBitsPerInt -numBitsLeft); 
     value_left = value_left >> (m_numBitsPerInt - numBitsLeft);
-    // cout << "Does cross at index " << index << " Value: "; printBitWise(value);
     m_storage[startElemIdx] = updateBits(value_left, m_storage[startElemIdx],leftBitIdx,0);
-    // cout << "Value_left: "; printBitWise(value_left);
-    // cout << "Element: "; printBitWise(m_storage[startElemIdx]);
-    m_storage[endElemIdx] = updateBits(value_right, m_storage[endElemIdx],NUM_BITS_PER_STORAGE_ELEMENT-1, rightBitIdx);
-    // cout << "Value_right: "; printBitWise(value_right);
-    // cout << "Element: "; printBitWise(m_storage[endElemIdx]);
-    // cout << endl;
+    m_storage[endElemIdx] = updateBits(value_right, m_storage[endElemIdx],NUM_BITS_PER_STORAGE_ELEMENT_MINUS_ONE, rightBitIdx);
   }
   else 
   {
     // Single element to be picked up
-    int8_t  startBit = (NUM_BITS_PER_STORAGE_ELEMENT-1) - (startBitIdx % NUM_BITS_PER_STORAGE_ELEMENT);
-    int8_t  endBitIdx = startBit - (m_numBitsPerInt -1);
+    int8_t  startBit = (NUM_BITS_PER_STORAGE_ELEMENT_MINUS_ONE) - (startBitIdx % NUM_BITS_PER_STORAGE_ELEMENT);
+    int8_t  endBitIdx = startBit - (m_numBitsPerIntMinusOne);
     m_storage[startElemIdx] = updateBits(value, m_storage[startElemIdx], startBit, endBitIdx);
   }
 }
@@ -65,8 +59,10 @@ int AdaptiveIntArray::get(size_t index) const
   int64_t startBitIdx,endBitIdx;
 
   // The desired int starts and ends at...
+  // FIXME: This data dependency on result 
+  // of multiply costs 14% of total time. RETHINK!
   startBitIdx = index*m_numBitsPerInt;
-  endBitIdx = startBitIdx + m_numBitsPerInt -1;
+  endBitIdx = startBitIdx + m_numBitsPerIntMinusOne;
   
   // Does it 'cross a boundary' in the underlying 
   // storage array?
@@ -85,7 +81,7 @@ int AdaptiveIntArray::get(size_t index) const
  
  
     leftBitIdx = startBitIdx - (startElemIdx << POWER_OF_2_USED_IN_STORAGE_ELEMENT);
-    leftBitIdx = (NUM_BITS_PER_STORAGE_ELEMENT -1) - leftBitIdx;
+    leftBitIdx = (NUM_BITS_PER_STORAGE_ELEMENT_MINUS_ONE) - leftBitIdx;
 
     // Since we know this int crosses a boundary,
     // number of bits in the left element == leftBitIdx+1
@@ -99,7 +95,7 @@ int AdaptiveIntArray::get(size_t index) const
     value_left = getBits(m_storage[startElemIdx],leftBitIdx,0);
     
     // Get the second part
-    value_right = getBits(m_storage[endElemIdx], NUM_BITS_PER_STORAGE_ELEMENT-1, rightBitIdx);
+    value_right = getBits(m_storage[endElemIdx], NUM_BITS_PER_STORAGE_ELEMENT_MINUS_ONE, rightBitIdx);
     
     // value_right needs shifting
     // FIXME: Right-shifting messes things up when the MSB is 1
@@ -107,13 +103,10 @@ int AdaptiveIntArray::get(size_t index) const
     value_right = value_right >> rightBitIdx;
     mask = (1 << numBitsRight) - 1;
     value_right = value_right & mask;
-    // cout << "Right gotten"; printBitWise(value_right);
 
     // First part needs left shifting
     value_left = value_left << (NUM_BITS_PER_STORAGE_ELEMENT - rightBitIdx);
-    // cout << "Left gotten"; printBitWise(value_left);
     int32_t res = value_left | value_right;
-    // cout << "Result gotten"; printBitWise(res);
     return res;
   }
   else 
@@ -121,8 +114,8 @@ int AdaptiveIntArray::get(size_t index) const
     // Single element to be picked up
     int8_t leftBitIdx,rightBitIdx;
     leftBitIdx = startBitIdx - (startElemIdx << POWER_OF_2_USED_IN_STORAGE_ELEMENT);
-    leftBitIdx = (NUM_BITS_PER_STORAGE_ELEMENT -1) - leftBitIdx;
-    rightBitIdx = leftBitIdx - (m_numBitsPerInt -1);
+    leftBitIdx = (NUM_BITS_PER_STORAGE_ELEMENT_MINUS_ONE) - leftBitIdx;
+    rightBitIdx = leftBitIdx - (m_numBitsPerIntMinusOne);
     
     int32_t res = getBits(m_storage[startElemIdx],leftBitIdx, rightBitIdx);
     res = res >> rightBitIdx;
@@ -149,8 +142,8 @@ void AdaptiveIntArray::print(size_t startIndex,
 
 int main()
 {
-  testAIA(10,100000);
-  testRegularIntArray(10,100000);
+  testAIA(10,900000);
+  testRegularIntArray(10,900000);
   return 0;
 }
 

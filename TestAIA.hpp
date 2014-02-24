@@ -26,7 +26,7 @@ void testAIA(int8_t maxPowerOf2, int maxNumElements)
   clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &start);
   for (;curPowerOf2 <= maxPowerOf2;curPowerOf2++)
   {
-    for (curNumElements=2;curNumElements<=maxNumElements;curNumElements+=100)
+    for (curNumElements=2;curNumElements<=maxNumElements;curNumElements+=1000)
     {
       int rangeMax = (1<< curPowerOf2) - 1;
       int testValue = rand() % (1<<curPowerOf2);
@@ -54,7 +54,7 @@ void testRegularIntArray(int8_t maxPowerOf2, int maxNumElements)
   clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &start);
   for (;curPowerOf2 <= maxPowerOf2;curPowerOf2++)
   {
-    for (curNumElements=2;curNumElements<=maxNumElements;curNumElements+=100)
+    for (curNumElements=2;curNumElements<=maxNumElements;curNumElements+=1000)
     {
       // rangeMax included here just to keep computation similar
       int rangeMax = (1<< curPowerOf2) - 1;

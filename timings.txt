@@ -10,5 +10,5 @@ Regular Int Array time: 1 s: 294270857 ns
 
 900k elements
 ====
-AIA time: 85 s: 297052796 ns
-Regular Int Array time: 7 s: 162967622 ns
+AIA time: 225 s: 477709776 ns
+Regular Int Array time: 16 s: 302464685 ns
