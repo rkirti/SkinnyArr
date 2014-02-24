@@ -1,6 +1,6 @@
 Usage
 -----
-g++ AdaptiveIntArray.cpp -o test
+g++ AdaptiveIntArray.cpp -o test -lrt
 
 
 Current State
