@@ -1,3 +1,0 @@
-─(19:48 $)─> ./a.out 
-AIA time: 28 s: 724829277 ns
-Regular Int Array time: 1 s: 373993305 ns

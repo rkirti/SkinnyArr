@@ -1,0 +1,14 @@
+10k elements
+====
+AIA time: 27 s: 786638361 ns
+Regular Int Array time: 2 s: 85160155 ns
+
+100k elements
+====
+AIA time: 28 s: 182335461 ns
+Regular Int Array time: 1 s: 294270857 ns
+
+900k elements
+====
+AIA time: 85 s: 297052796 ns
+Regular Int Array time: 7 s: 162967622 ns
